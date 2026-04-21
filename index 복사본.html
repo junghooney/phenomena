@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./css/reset.css">
+  <title>Phenomena</title>
+  <style>
+    /* 공통 */
+    .container {
+      padding:0 12px;
+    }
+
+    /* Header */
+    .headerContainer {
+      padding:14px 0 0 0;
+    }
+
+    /* .headerContainer::after {
+      position:absolute;
+      bottom:50%;
+      content:'';
+      width:100%;
+      height:1px;
+      background:#eee;
+    } */
+
+    .header-top {
+      position:relative;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:0 0 42px 0;
+    }
+
+    /* .header-top::after {
+      content:'';
+      position:absolute;
+      bottom:0;
+      width:100%;
+      height:1px;
+      background:#eee;
+    } */
+
+    /* 로고 */
+    h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-size:15px;
+      font-weight:900;
+      letter-spacing:1px;
+    }
+
+    /* #9CA3AF */
+    /* 날짜, 시간 */
+    #date-time {
+      font-family: monospace;
+      display: inline-block;
+      font-size: 12px
+    }
+
+    #date {
+      display: flex;
+      justify-content:flex-end;
+      margin:0 0 2px 0;
+    }
+
+    #date span.year {
+      padding:0 4px 0 0;
+    }
+
+    #date span.month {
+      padding:0 2px 0 0;
+    }
+
+    #time {
+      display:flex;
+      gap:10px;
+      color:#9CA3AF;
+    }
+
+    .colon {
+      animation: blink 1s steps(1) infinite;
+    }
+    
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
+    }
+
+    /* gnb */
+    .gnb {
+      position:relative;
+    }
+
+    .gnb::after {
+      content:'';
+      position:absolute;
+      margin:12px 0 0 0;
+      width:100%;
+      height:1px;
+      background:#eee;
+    }
+
+    .gnb ul {
+      display: grid;
+      grid-template-columns: repeat(2, auto);
+      row-gap:10px;
+    }
+
+    .gnb li {
+      display:inline-block;
+      line-height:0;
+    }
+
+    .gnb li a {
+      display:inline-block;
+      /* width:fit-content; */
+      font-size:12px;
+      letter-spacing:1px;
+      line-height:1;
+      color:#000;
+    }
+
+
+    /* Tablet (768px 이상) */
+    @media (min-width: 360px) and (min-width: 768px) {
+
+      /* .container {
+        padding: 0 12px;
+      }  */
+
+      .headerContainer {
+        padding-top: 16px;
+      }
+
+      .header-top {
+        padding-bottom: 52px;
+      }
+
+      /* 로고 */
+      h1 {
+        font-size: 32px;
+        letter-spacing: 1px;
+      }
+
+      /* 날짜 */
+      #date-time {
+        font-family: monospace;
+        display: inline-block;
+        font-size: 12px
+      }
+
+      #date {
+        display:flex;
+        justify-content:flex-end;
+        font-size:1rem;
+        margin:0 0 4px 0;
+      }
+
+    #date span.year {
+      padding:0 4px 0 0;
+    }
+
+    #date span.month {
+      padding:0 2px 0 0;
+    }
+
+    #time {
+      display:flex;
+      gap:10px;
+      font-size:1rem;
+      color:#9CA3AF;
+    }
+
+  
+    /* 타블렛 gnb */
+    .gnb {
+      position:relative;
+    }
+
+    .gnb::after {
+      content:'';
+      position:absolute;
+      margin:12px 0 0 0;
+      width:100%;
+      height:1px;
+      background:#eee;
+    }
+
+    .gnb ul {
+      display: grid;
+      grid-template-columns: repeat(2, auto);
+      row-gap:10px;
+    }
+
+    .gnb li {
+      display:inline-block;
+      line-height:0;
+    }
+
+    .gnb li a {
+      display:inline-block;
+      /* width:fit-content; */
+      font-size:14px;
+      letter-spacing:1px;
+      line-height:1;
+      color:#000;
+    }
+
+
+  }
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="headerContainer">
+        <div class="header-top">
+          <h1>PHENOMENA</h1>
+          <div id="date-time">
+            <div id="date">
+              <span class="year"></span>
+              <span class="month"></span>
+              <span class="day"></span>
+            </div>
+            <div id="time">
+              <span class="tz"></span>
+              <span class="clock"></span>
+            </div>
+          </div>
+        </div>
+        <nav class="gnb">
+          <ul>
+            <li>
+              <a href="#" class="active">Informaçao</a>
+            </li>
+            <li>
+              <a href="#">Archive</a>
+            </li>
+            <li>
+              <a href="#">Treino</a>
+            </li>
+            <li>
+              <a href="#">Work out</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+  <script>
+    function startClock() {
+  function update() {
+    const now = new Date();
+
+    // GMT+9
+    const kst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+
+    const months = ["Jan","Feb","Mar","Apr","May","Jun",
+                    "Jul","Aug","Sep","Oct","Nov","Dec"];
+
+    // 날짜
+    const year = kst.getUTCFullYear();
+    const month = months[kst.getUTCMonth()];
+    const date = kst.getUTCDate();
+
+    // 시간
+    const hours = String(kst.getUTCHours()).padStart(2, '0');
+    const minutes = String(kst.getUTCMinutes()).padStart(2, '0');
+
+    // 👉 span 각각에 넣기
+    document.querySelector(".year").textContent = year;
+    document.querySelector(".month").textContent = month;
+    document.querySelector(".day").textContent = date;
+
+    // document.getElementById("time").textContent =
+    //   `GMT+9 ${hours}:${minutes}`;
+
+    document.querySelector(".tz").textContent = "GMT+9";
+    document.querySelector(".clock").innerHTML = `${hours}<span class="colon">:</span>${minutes}`;
+
+    const delay = (60 - now.getSeconds()) * 1000;
+    setTimeout(update, delay);
+  }
+
+  update();
+}
+
+startClock();
+//  function startClock() {
+//   function update() {
+//     const now = new Date();
+
+//     // 👉 GMT+9 기준 시간 만들기
+//     const kst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+
+//     const months = ["Jan","Feb","Mar","Apr","May","Jun",
+//                     "Jul","Aug","Sep","Oct","Nov","Dec"];
+
+//     // 📅 날짜
+//     const year = kst.getUTCFullYear();
+//     const month = months[kst.getUTCMonth()];
+//     const date = kst.getUTCDate();
+
+//     // ⏰ 시간 (초 제거)
+//     const hours = String(kst.getUTCHours()).padStart(2, '0');
+//     const minutes = String(kst.getUTCMinutes()).padStart(2, '0');
+
+//     // 출력
+//     document.getElementById("date").textContent =
+//       `${year} ${month} ${date}`;
+
+//     document.getElementById("time").textContent =
+//       `GMT+9 ${hours}:${minutes}`;
+
+//     // 👉 1분마다 업데이트 (초 없으니까 더 효율적)
+//     const delay = (60 - now.getSeconds()) * 1000;
+//     setTimeout(update, delay);
+//   }
+
+//   update();
+// }
+
+// startClock();
+ 
+  //   function startClock() {
+  //     function update() {
+  //       const now = new Date();
+      
+  //       // 👉 GMT+9 기준 시간 만들기 (핵심)
+  //       const kst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+      
+  //       const months = ["Jan","Feb","Mar","Apr","May","Jun",
+  //                       "Jul","Aug","Sep","Oct","Nov","Dec"];
+      
+  //       // 📅 날짜 (GMT+9 기준)
+  //       const year = kst.getUTCFullYear();
+  //       const month = months[kst.getUTCMonth()];
+  //       const date = kst.getUTCDate();
+      
+  //       // ⏰ 시간 (GMT+9 기준)
+  //       const hours = String(kst.getUTCHours()).padStart(2, '0');
+  //       const minutes = String(kst.getUTCMinutes()).padStart(2, '0');
+  //       const seconds = String(kst.getUTCSeconds()).padStart(2, '0');
+      
+  //       // 출력
+  //       document.getElementById("date").textContent =
+  //         `${year} ${month} ${date}`;
+      
+  //       document.getElementById("time").textContent =
+  //         `GMT+9 ${hours}:${minutes}:${seconds}`;
+      
+  //       // 정확한 1초 유지
+  //       const delay = 1000 - now.getMilliseconds();
+  //       setTimeout(update, delay);
+  //     }
+
+  //     update();
+  //   }   
+
+  // startClock();
+  </script>
+</body>
+</html>
